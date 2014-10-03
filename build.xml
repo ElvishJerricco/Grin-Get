@@ -1,0 +1,38 @@
+<project name="GRIN-GET" default="main">
+    <condition property="is_windows">
+        <os family="windows"/>
+    </condition>
+    <condition property="is_unix">
+        <os family="unix" />
+    </condition>
+
+    <target name="make_archive">
+        <copy todir="build/grin/bin">
+            <fileset dir="bin" />
+        </copy>
+        <copy todir="build/grin/lib">
+            <fileset dir="lib" />
+        </copy>
+        <zip zip64Mode="never" destfile="build/grin-get.zip" basedir="build/grin" />
+    </target>
+
+    <target name="if_windows" if="is_windows" depends="make_archive">
+        <exec executable="certutil">
+            <arg value="-encode" />
+            <arg value="build/grin-get.zip" />
+            <arg value="build/grin-get.zip.base64" />
+        </exec>
+    </target>
+
+    <target name="if_unix" if="is_unix" depends="make_archive">
+        <exec executable="base64">
+            <arg value="-i" />
+            <arg value="build/grin-get.zip" />
+            <arg value="-o" />
+            <arg value="build/grin-get.zip.base64" />
+        </exec>
+    </target>
+
+    <target name="main" depends="if_windows, if_unix">
+    </target>
+</project>
