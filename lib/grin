@@ -66,7 +66,7 @@ function refreshPath(shell)
     shell.setPath(table.concat(path, ":"))
 end
 
-function getPackagePathItems(pkg, version)
+function getPackagePathItems(pkg)
     local fullPkg = combine(packageNameComponents(pkg))
     local path = {}
 
@@ -94,7 +94,7 @@ function getPackagePathItems(pkg, version)
     return path
 end
 
-function getPackageLibItems(pkg, version)
+function getPackageLibItems(pkg)
     local fullPkg = combine(packageNameComponents(pkg))
     local libs = {}
 
