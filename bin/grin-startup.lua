@@ -13,3 +13,16 @@ assert(os.loadAPI(jsonAPIPath), "Failed to load JSON API") -- grin requires a mi
 
 grin.setGrinDir(grinDir)
 grin.refreshPath(shell)
+
+grin.forEach(function(pkg, pkgDir)
+    local jsonData = grin.getPackageGrinJSON(pkg)
+    local startup
+    if jsonData and jsonData.startup then
+        startup = grin.getFromPackage(pkg, jsonData.startup)
+    else
+        startup = grin.resolveInPackage(pkg, "startup")
+    end
+    if startup then
+        shell.run(startup)
+    end
+end)
