@@ -47,21 +47,12 @@ function refreshPath(shell)
 
     local path = {oldPath, grinPath}
 
-    local packagesDir = combine(grinDir, "packages")
-    for i,user in ipairs(fs.list(packagesDir)) do
-        local userDir = combine(packagesDir, user)
-        if fs.isDir(userDir) then
-            for i2,package in ipairs(fs.list(userDir)) do
-                local pkgDir = combine(userDir, package)
-                if fs.isDir(pkgDir) then
-                    local pathItems = getPackagePathItems(combine(user, package))
-                    for i,v in ipairs(pathItems) do
-                        table.insert(path, v)
-                    end
-                end
-            end
+    forEach(function(pkg)
+        local pathItems = getPackagePathItems(pkg)
+        for i,v in ipairs(pathItems) do
+            table.insert(path, v)
         end
-    end
+    end)
 
     shell.setPath(table.concat(path, ":"))
 end
@@ -168,6 +159,21 @@ function getLatestInstalledVersion(pkg)
     for i,v in ipairs(jsonData) do
         if fs.isDir(combine(packageDir, v.tag_name)) then
             return v.tag_name
+        end
+    end
+end
+
+function forEach(func)
+    local packagesDir = combine(grinDir, "packages")
+    for i,user in ipairs(fs.list(packagesDir)) do
+        local userDir = combine(packagesDir, user)
+        if fs.isDir(userDir) then
+            for i2,package in ipairs(fs.list(userDir)) do
+                local pkgDir = combine(userDir, package)
+                if fs.isDir(pkgDir) and fs.exists(combine(pkgDir, "releases.json")) then
+                    func(combine(user, package), pkgDir)
+                end
+            end
         end
     end
 end
