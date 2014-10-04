@@ -8,4 +8,6 @@ assert(githubApiResponse.getResponseCode() == 200, "Failed github response")
 local fh = fs.open(fs.combine(grinPackagePath, "releases.json"), "w")
 fh.write(githubApiResponse.readAll())
 
+shell.run("grin/bin/grin-startup.lua")
+
 print("It is recommended that your startup file run grin/bin/grin-startup.lua")
