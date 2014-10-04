@@ -15,16 +15,24 @@ if not options.package then
 end
 
 local user, repo, tag = grin.packageNameComponents(options.package)
+if grin.isPackageInstalled(grin.combine(user, repo, tag)) then
+    print("Package already installed")
+    return
+end
 
 local releaseInfo = grin.getReleaseInfoFromGithub(grin.combine(user, repo))
 local release
-for i,v in ipairs(releaseInfo) do
-    if v.tag_name == tag then
-        release = v
-        break
+if tag then
+    for i,v in ipairs(releaseInfo) do
+        if v.tag_name == tag then
+            release = v
+            break
+        end
     end
+    assert(release, "Tag not found " .. tag)
+else
+    release = assert(releaseInfo[1], "No releases found")
 end
-assert(release, "Tag not found " .. tag)
 
 local grinPrg = grin.resolveInPackage("ElvishJerricco/Grin", "grin")
 shell.run(grinPrg, "-u", user, "-r", repo, "-t", release.tag_name,

@@ -182,7 +182,8 @@ function getLatestInstalledVersion(pkg)
     expect("string", pkg)
     local jsonData = getReleaseInfo(pkg)
 
-    local user, repo, tag = packageNameComponents(pkg)
+    local _,_, user, repo = pkg:find("^([^/]+)/([^/]+)$")
+    assert(user and repo, "Invalid package name: " .. pkg)
     local packageDir = combine(grinDir, "packages", user, repo)
     for i,v in ipairs(jsonData) do
         if fs.isDir(combine(packageDir, v.tag_name)) then
@@ -204,6 +205,16 @@ function forEach(func)
                 end
             end
         end
+    end
+end
+
+function isPackageInstalled(pkg)
+    expect("string", pkg)
+    local user, repo, tag = packageNameComponents(pkg)
+    if not tag then
+        return false
+    else
+        return fs.isDir(combine(grinDir, "packages", user, repo, tag))
     end
 end
 
