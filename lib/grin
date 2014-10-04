@@ -182,6 +182,8 @@ function getLatestInstalledVersion(pkg)
     expect("string", pkg)
     local jsonData = getReleaseInfo(pkg)
 
+    local user, repo, tag = packageNameComponents(pkg)
+    local packageDir = combine(grinDir, "packages", user, repo)
     for i,v in ipairs(jsonData) do
         if fs.isDir(combine(packageDir, v.tag_name)) then
             return v.tag_name
