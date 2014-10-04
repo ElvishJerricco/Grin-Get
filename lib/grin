@@ -57,11 +57,15 @@ function refreshPath(shell)
     shell.setPath(table.concat(path, ":"))
 end
 
-function getPackagePathItems(pkg)
+function resolvePackageRoot(pkg)
     local fullPkg = combine(packageNameComponents(pkg))
+    return combine(grinDir, "packages", fullPkg)
+end
+
+function getPackagePathItems(pkg)
     local path = {}
 
-    local dir = combine(grinDir, "packages", fullPkg)
+    local dir = resolvePackageRoot(pkg)
     local packageGrinJSON = getPackageGrinJSON(fullPkg)
     if packageGrinJSON then
         if type(packageGrinJSON.bin) == "string" then
@@ -86,10 +90,9 @@ function getPackagePathItems(pkg)
 end
 
 function getPackageLibItems(pkg)
-    local fullPkg = combine(packageNameComponents(pkg))
     local libs = {}
 
-    local dir = combine(grinDir, "packages", fullPkg)
+    local dir = resolvePackageRoot(pkg)
     local packageGrinJSON = getPackageGrinJSON(fullPkg)
     if packageGrinJSON then
         if type(packageGrinJSON.lib) == "string" then
@@ -121,9 +124,13 @@ function resolveInPackage(pkg, path)
     end
 end
 
+function getFromPackage(pkg, path)
+    local dir = resolvePackageRoot(pkg)
+    return combine(dir, path)
+end
+
 function getPackageGrinJSON(pkg)
-    local user, repo, version = packageNameComponents(pkg)
-    local grinJSONPath = combine(grinDir, "packages", pkg, version, "grin.json")
+    local grinJSONPath = getFromPackage(pkg, "grin.json")
     if fs.exists(grinJSONPath) then
         return json.decodeFromFile(grinJSONPath)
     end
