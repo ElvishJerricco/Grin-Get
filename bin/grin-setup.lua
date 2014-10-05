@@ -7,6 +7,7 @@ local githubApiResponse = assert(http.get("https://api.github.com/repos/ElvishJe
 assert(githubApiResponse.getResponseCode() == 200, "Failed github response")
 local fh = fs.open(fs.combine(grinPackagePath, "releases.json"), "w")
 fh.write(githubApiResponse.readAll())
+fh.close()
 
 shell.run("grin/bin/grin-startup.lua")
 
