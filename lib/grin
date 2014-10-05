@@ -154,6 +154,12 @@ end
 
 function getReleaseInfo(pkg)
     expect("string", pkg)
+
+    if pkg:find("([^/%s]+)/([^/%s]+)/([^/%s]+)") then
+        local user, repo = pkg:find("([^/%s]+)/([^/%s]+)/([^/%s]+)")
+        pkg = combine(user, repo)
+    end
+
     local packageDir = combine(grinDir, "packages", pkg)
     if not fs.exists(packageDir) then
         return getReleaseInfoFromGithub(pkg)
