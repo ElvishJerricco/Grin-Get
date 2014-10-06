@@ -51,7 +51,7 @@ function refreshPath(shell)
     local grinPath = "/"..combine(grinDir, "bin")
 
     local oldPath = shell.path()
-    oldPath:gsub(":"..grinPath.."[^:]*", "")
+    oldPath:gsub(":"..grinDir.."[^:]*", "")
 
     local path = {oldPath, grinPath}
 
@@ -63,6 +63,24 @@ function refreshPath(shell)
     end)
 
     shell.setPath(table.concat(path, ":"))
+end
+
+function refreshHelpPath()
+    local grinPath = "/"..combine(grinDir, "help")
+
+    local oldPath = help.path()
+    oldPath:gsub(":"..grinDir.."[^:]*", "")
+
+    local path = {oldPath, grinPath}
+
+    forEach(function(pkg)
+        local pathItems = getPackageHelpItems(pkg)
+        for i,v in ipairs(pathItems) do
+            table.insert(path, v)
+        end
+    end)
+
+    help.setPath(table.concat(path, ":"))
 end
 
 function resolvePackageRoot(pkg)
@@ -93,6 +111,32 @@ function getPackagePathItems(pkg)
             table.insert(path, bin)
         else
             table.insert(path, dir)
+        end
+    end
+
+    return path
+end
+
+function getPackageHelpItems(pkg)
+    expect("string", pkg)
+    local path = {}
+
+    local dir = resolvePackageRoot(pkg)
+    local packageGrinJSON = getPackageGrinJSON(pkg)
+    if packageGrinJSON then
+        if type(packageGrinJSON.help) == "string" then
+            for v in packageGrinJSON.help:gmatch("[^:]+") do
+                table.insert(path, combine(dir, v))
+            end
+        elseif type(packageGrinJSON.help) == "table" then
+            for i,v in ipairs(packageGrinJSON.help) do
+                table.insert(path, combine(dir, v))
+            end
+        end
+    else
+        local help = combine(dir, "help")
+        if fs.exists(help) then
+            table.insert(path, help)
         end
     end
 

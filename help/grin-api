@@ -1,0 +1,77 @@
+Utility Functions:
+
+function grin.combine(path, ...)
+    Returns the fs.combine() of a variable number of components
+
+function grin.assert(condition, errMsg, level)
+    Just like assert but with a level parameter like error
+
+function grin.expect(t, v)
+    Asserts that type(v) == t
+
+Grin Functions:
+Package names are in the format user/repo/version
+If version isn't supplied, it is determined to be the latest installed version.
+
+function grin.setGrinDir(dir)
+    Sets the directory that grin knows as its root
+
+function grin.getGrinDir()
+    Gets the root grin directory
+
+function grin.packageNameComponents(pkg)
+    Returns the user, repo, version of the given full package name.
+
+function grin.refreshPath(shell)
+    Puts the bin folders of all grin-get packages on the path of the given shell.
+
+function refreshHelpPath()
+    Puts the help folders of all grin-get packages on the help path.
+
+function grin.resolvePackageRoot(pkg)
+    Get the root directory of the given package.
+
+function grin.getPackagePathItems(pkg)
+    Returns a table of all the bin folders that a package specifies.
+
+function getPackageHelpItems(pkg)
+    Returns a table of all the help folders that a package specifies.
+
+function grin.getPackageLibItems(pkg)
+    Returns a table of all the lib folders that a package specifies.
+
+function grin.resolveInPackage(pkg, path)
+    Returns the full path of the file found at the given path in the given package's bin folder(s).
+
+function grin.getFromPackage(pkg, path)
+    Returns the combination of the given package's full path and the given path.
+
+function grin.getPackageGrinJSON(pkg)
+    Returns the object represented in the given package's grin.json file.
+
+function grin.getReleaseInfo(pkg)
+    Returns the object represented by releases.json in the repo's directory.
+    Will resort to GitHub if necessary.
+
+function grin.getReleaseInfoFromGithub(pkg)
+    Returns the object represented by the json GitHub returns for the given repo.
+
+function grin.getLatestInstalledVersion(pkg)
+    Returns the tag name of the latest installed version of the package.
+
+function grin.forEach(func)
+    Calls the given function once for each installed package
+    Passes the package name as a parameter.
+    Does not call the function multiple times for different versions of the same package
+
+function grin.isPackageInstalled(pkg)
+    Checks if the given package is installed.
+
+function grin.packageFromExecutable(path)
+    Given the full path of a program, returns the package that program resides in.
+
+function grin.getPackageAPI(pkg, name)
+    Finds the API for the given name in the given package.
+    Then loads that API with os.loadAPI
+    Returns the loaded API.
+    Ignores .lua file extensions, which is nice for external editors.

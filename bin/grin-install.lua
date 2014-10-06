@@ -78,3 +78,4 @@ end
 
 
 grin.refreshPath(shell)
+grin.refreshHelpPath()

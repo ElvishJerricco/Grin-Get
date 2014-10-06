@@ -1,0 +1,12 @@
+grin-get is the program used to perform installations of grin-get compatible packages. Package names are formatted as User/Repo[/Version], where the version is optional.
+
+For help with the grin api, use help grin-api
+
+Usage:
+    grin-get <install | remove> ...
+
+grin-get install <package>
+    Instructs grin-get to install the specified package.
+
+grin-get remove <package>
+    Instructs grin-get to remove the specified package from the system.
