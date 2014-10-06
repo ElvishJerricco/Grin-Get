@@ -224,6 +224,11 @@ function isPackageInstalled(pkg)
     end
 end
 
+function packageFromExecutable(path)
+    local _,_, package = path:find("^"..grinDir.."/packages/([^/]+/[^/]+/[^/]+)/")
+    return package
+end
+
 local packageAPIs = {}
 function getPackageAPI(pkg, name)
     expect("string", pkg)
