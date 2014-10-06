@@ -4,7 +4,8 @@ local argparse = grin.getPackageAPI("ElvishJerricco/Grin", "argparse")
 local parser = argparse.new()
 parser
     :argument"package"
-parser:usage"Usage: grin-install <user>/<repo>[/<tag>]"
+parser
+    :usage"Usage: grin-install <user>/<repo>[/<tag>]"
 local options = parser:parse({}, ...)
 if not options then
     return
@@ -35,8 +36,26 @@ else
 end
 
 local grinPrg = grin.resolveInPackage("ElvishJerricco/Grin", "grin")
-shell.run(grinPrg, "-u", user, "-r", repo, "-t", release.tag_name,
-    grin.combine(grin.getGrinDir(), "packages", user, repo, release.tag_name))
+
+local ok, err
+parallel.waitForAny(function()
+    ok, err = pcall(shell.run, grinPrg, "-e", "-u", user, "-r", repo, "-t", release.tag_name,
+        grin.combine(grin.getGrinDir(), "packages", user, repo, release.tag_name))
+end, function()
+    while true do
+        local e, s = os.pullEvent("grin_install_status")
+        local x, y = term.getCursorPos()
+        term.setCursorPos(1, y)
+        term.clearLine()
+        term.write(s)
+    end
+end)
+
+assert(ok, err)
+local x, y = term.getCursorPos()
+term.setCursorPos(1, y)
+term.clearLine()
+print(options.package, " successfully downloaded")
 
 
 local packageGrinData = grin.getPackageGrinJSON(grin.combine(user, repo, release.tag_name))
