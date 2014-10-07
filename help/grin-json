@@ -1,0 +1,24 @@
+Grin-Get packages can include a grin.json file.
+This should represent an object with several optional fields.
+
+bin
+    The bin field can be a string delimited by colons, where each section is a path in the package where executables are found.
+    Or the bin field can be a table with strings that represent the same things.
+
+lib
+    The lib field is like the bin field, except APIs are found instead of executables.
+
+help
+    The help field is like the bin field, except help files are found instead of executables.
+
+startup
+    This should be a string that points to the file the package wants to run at startup.
+
+Example grin.json file:
+
+{
+    "bin": "programs",
+    "lib": "apis",
+    "help": "docs",
+    "startup": "load.lua"
+}
