@@ -230,11 +230,16 @@ end
 
 function getLatestInstalledVersion(pkg)
     expect("string", pkg)
-    local jsonData = getReleaseInfo(pkg)
 
     local _,_, user, repo = pkg:find("^([^/]+)/([^/]+)$")
     assert(user and repo, "Invalid package name: " .. pkg)
     local packageDir = combine(grinDir, "packages", user, repo)
+
+    if fs.isDir(combine(packageDir, "dev")) then
+        return "dev"
+    end
+
+    local jsonData = getReleaseInfo(pkg)
     for i,v in ipairs(jsonData) do
         if fs.isDir(combine(packageDir, v.tag_name)) then
             return v.tag_name
@@ -250,7 +255,7 @@ function forEach(func)
         if fs.isDir(userDir) then
             for i2,package in ipairs(fs.list(userDir)) do
                 local pkgDir = combine(userDir, package)
-                if fs.isDir(pkgDir) and fs.exists(combine(pkgDir, "releases.json")) then
+                if fs.isDir(pkgDir) then
                     func(combine(user, package), pkgDir)
                 end
             end
