@@ -15,6 +15,7 @@ grin.setGrinDir(grinDir)
 grin.refreshPath(shell)
 grin.refreshHelpPath()
 
+local startupFunctions = {}
 grin.forEach(function(pkg, pkgDir)
     local jsonData = grin.getPackageGrinJSON(pkg)
     local startup
@@ -24,6 +25,12 @@ grin.forEach(function(pkg, pkgDir)
         startup = grin.resolveInPackage(pkg, "startup")
     end
     if startup then
-        shell.run(startup)
+        table.insert(startupFunctions, function()
+            shell.run(startup)
+        end)
     end
 end)
+
+if #startupFunctions > 0 then
+    parallel.waitForAll(unpack(startupFunctions))
+end
