@@ -274,6 +274,7 @@ function isPackageInstalled(pkg)
 end
 
 function packageFromExecutable(path)
+    expect("string", path)
     local _,_, package = path:find("^"..grinDir.."/packages/([^/]+/[^/]+/[^/]+)/")
     return package
 end
@@ -291,8 +292,8 @@ function getPackageAPI(pkg, name)
     local libPath = getPackageLibItems(pkg, version)
     for i,v in ipairs(libPath) do
         local path = combine(v, name)
-        if fs.exists(combine(path, ".lua")) then
-            path = combine(path, ".lua")
+        if fs.exists(path..".lua") then
+            path = path..".lua"
         end
 
         if fs.exists(path) then

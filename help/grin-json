@@ -5,6 +5,9 @@ bin
     The bin field can be a string delimited by colons, where each section is a path in the package where executables are found.
     Or the bin field can be a table with strings that represent the same things.
 
+dependencies
+    The dependencies field is like the bin field, except pacakges that this package is dependent on are found instead of executables.
+
 lib
     The lib field is like the bin field, except APIs are found instead of executables.
 
