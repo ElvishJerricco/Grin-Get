@@ -4,16 +4,11 @@ local argparse = grin.getPackageAPI("ElvishJerricco/Grin", "argparse")
 local parser = argparse.new()
 parser
     :argument"package"
-parser
-    :usage"Usage: grin-install <user>/<repo>[/<tag>]"
 local options = parser:parse({}, ...)
 if not options then
     return
 end
-if not options.package then
-    parser:printUsage()
-    return
-end
+grin.assert(options.package, "Usage: grin-install <user>/<repo>[/<tag>]", 0)
 
 local user, repo, tag = grin.packageNameComponents(options.package)
 if grin.isPackageInstalled(grin.combine(user, repo, tag)) then

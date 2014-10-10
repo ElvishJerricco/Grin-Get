@@ -14,7 +14,6 @@ commandParser
     :argument"commandArgs"
     :count"*"
 
-commandParser:usage"Usage: grin-get <command> ..."
 local options = commandParser:parse({commandArgs={}}, ...)
 if not options then
     return
@@ -25,5 +24,5 @@ if options.command == "install" then
 elseif options.command == "remove" then
     run("grin-remove.lua", unpack(options.commandArgs))
 else
-    commandParser:printUsage()
+    error("Usage: grin-get <command> ...", 0)
 end
