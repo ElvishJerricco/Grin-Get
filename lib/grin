@@ -321,6 +321,10 @@ function os.loadAPI(path)
         
     local tEnv = {}
     setmetatable( tEnv, { __index = _G } )
+    if pkg then
+        tEnv.__package = pkg
+    end
+    
     local fnAPI, err = loadfile( path )
     if fnAPI then
         setfenv( fnAPI, tEnv )
