@@ -9,6 +9,6 @@ local fh = fs.open(fs.combine(grinPackagePath, "releases.json"), "w")
 fh.write(githubApiResponse.readAll())
 fh.close()
 
-shell.run("grin/bin/grin-startup.lua")
+shell.run(fs.combine(grinDir, "bin/grin-startup.lua"))
 
 print("It is recommended that your startup file run grin/bin/grin-startup.lua")
