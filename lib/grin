@@ -320,17 +320,11 @@ function os.loadAPI(path)
     tAPIsLoading[sName] = true
         
     local tEnv = {}
-    setmetatable( tEnv, { __index = _G } )
     if pkg then
         tEnv.__package = pkg
     end
     
-    local fnAPI, err = loadfile( path )
-    if fnAPI then
-        setfenv( fnAPI, tEnv )
-        fnAPI()
-    else
-        printError( err )
+    if not os.run(tEnv, path) then
         tAPIsLoading[sName] = nil
         return false
     end
