@@ -6,7 +6,7 @@ end
 
 run("grin-startup.lua")
 
-local argparse = grin.getPackageAPI("ElvishJerricco/Grin", "argparse")
+local argparse = grin.getPackageAPI("Team-CC-Corp/Grin", "argparse")
 local commandParser = argparse.new()
 commandParser
     :argument"command"

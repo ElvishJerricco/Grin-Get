@@ -1,5 +1,5 @@
-local json = grin.getPackageAPI("ElvishJerricco/Grin", "json")
-local argparse = grin.getPackageAPI("ElvishJerricco/Grin", "argparse")
+local json = grin.getPackageAPI("Team-CC-Corp/Grin", "json")
+local argparse = grin.getPackageAPI("Team-CC-Corp/Grin", "argparse")
 
 local parser = argparse.new()
 parser
@@ -30,7 +30,7 @@ else
     release = assert(releaseInfo[1], "No releases found")
 end
 
-local grinPrg = grin.resolveInPackage("ElvishJerricco/Grin", "grin")
+local grinPrg = grin.resolveInPackage("Team-CC-Corp/Grin", "grin")
 
 local ok, err
 parallel.waitForAny(function()
