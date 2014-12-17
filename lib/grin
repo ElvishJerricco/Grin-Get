@@ -98,15 +98,15 @@ function getPackagePathItems(pkg)
     if packageGrinJSON then
         if type(packageGrinJSON.bin) == "string" then
             for v in packageGrinJSON.bin:gmatch("[^:]+") do
-                table.insert(path, combine(dir, v))
+                table.insert(path, "/"..combine(dir, v))
             end
         elseif type(packageGrinJSON.bin) == "table" then
             for i,v in ipairs(packageGrinJSON.bin) do
-                table.insert(path, combine(dir, v))
+                table.insert(path, "/"..combine(dir, v))
             end
         end
     else
-        local bin = combine(dir, "bin")
+        local bin = "/"..combine(dir, "bin")
         if fs.exists(bin) then
             table.insert(path, bin)
         else
@@ -126,15 +126,15 @@ function getPackageHelpItems(pkg)
     if packageGrinJSON then
         if type(packageGrinJSON.help) == "string" then
             for v in packageGrinJSON.help:gmatch("[^:]+") do
-                table.insert(path, combine(dir, v))
+                table.insert(path, "/"..combine(dir, v))
             end
         elseif type(packageGrinJSON.help) == "table" then
             for i,v in ipairs(packageGrinJSON.help) do
-                table.insert(path, combine(dir, v))
+                table.insert(path, "/"..combine(dir, v))
             end
         end
     else
-        local help = combine(dir, "help")
+        local help = "/"..combine(dir, "help")
         if fs.exists(help) then
             table.insert(path, help)
         end
@@ -152,15 +152,15 @@ function getPackageLibItems(pkg)
     if packageGrinJSON then
         if type(packageGrinJSON.lib) == "string" then
             for v in packageGrinJSON.lib:gmatch("[^:]+") do
-                table.insert(libs, combine(dir, v))
+                table.insert(libs, "/"..combine(dir, v))
             end
         elseif type(packageGrinJSON.lib) == "table" then
             for i,v in ipairs(packageGrinJSON.lib) do
-                table.insert(libs, combine(dir, v))
+                table.insert(libs, "/"..combine(dir, v))
             end
         end
     else
-        local lib = combine(dir, "lib")
+        local lib = "/"..combine(dir, "lib")
         if fs.exists(lib) then
             table.insert(libs, lib)
         else
