@@ -8,7 +8,7 @@ assert(os.loadAPI(fs.combine(grinDir, "lib/grin")), "Failed to load Grin API")
 if json then
     os.unloadAPI("json")
 end
-local jsonAPIPath = grin.combine(grinDir, "packages/Team-CC-Corp/Grin/1.2.1/lib/json")
+local jsonAPIPath = grin.combine(grinDir, "packages/Team-CC-Corp/Grin/1.2.2/lib/json")
 assert(os.loadAPI(jsonAPIPath), "Failed to load JSON API") -- grin requires a minimum of the json API
 
 grin.setGrinDir(grinDir)
