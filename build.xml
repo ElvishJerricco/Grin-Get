@@ -9,6 +9,9 @@
     <target name="make_archive">
         <copy todir="build/grin/bin">
             <fileset dir="bin" />
+            <filterset>
+                <filter token="GRIN_VERSION" value="1.2.4" />
+            </filterset>
         </copy>
         <copy todir="build/grin/lib">
             <fileset dir="lib" />

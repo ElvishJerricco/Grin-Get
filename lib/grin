@@ -211,6 +211,7 @@ function getReleaseInfo(pkg)
 
     local jsonFh = assert(fs.open(combine(packageDir, "releases.json"), "r"), pkg.." releases.json not found", 2)
     local jsonData = json.decode(jsonFh.readAll())
+    jsonFh.close()
 
     return jsonData
 end
