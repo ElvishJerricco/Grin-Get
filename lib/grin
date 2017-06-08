@@ -211,6 +211,7 @@ function getReleaseInfo(pkg)
 
     local jsonFh = assert(fs.open(combine(packageDir, "releases.json"), "r"), pkg.." releases.json not found", 2)
     local jsonData = json.decode(jsonFh.readAll())
+    jsonFh.close()
 
     return jsonData
 end
@@ -222,10 +223,22 @@ function getReleaseInfoFromGithub(pkg)
     local githubApiResponse = assert(http.get("https://api.github.com/repos/"..user.."/"..repo.."/releases"))
     assert(githubApiResponse.getResponseCode() == 200, "Failed github response", 2)
     local jsonStr = githubApiResponse.readAll()
+
+    local decoded = json.decode(jsonStr)
+    for k, v in ipairs(decoded) do
+        decoded[k] = {
+            tag_name = v.tag_name,
+            target_commitish = v.target_commitish,
+            name = v.name,
+            published_at = v.published_at,
+        }
+    end
+
     local jsonFh = fs.open(combine(grinDir, "packages", user, repo, "releases.json"), "w")
-    jsonFh.write(jsonStr)
+    jsonFh.write(json.encode(decoded))
     jsonFh.close()
-    return json.decode(jsonStr)
+
+    return decoded
 end
 
 function getLatestInstalledVersion(pkg)
